@@ -288,7 +288,6 @@ namespace PasswordManager.Data
                     entry.DecryptedPassword = "[Decryption Error]";
                 }
             }
-
             return entries;
         }
 

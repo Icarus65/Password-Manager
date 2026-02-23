@@ -5,11 +5,15 @@ namespace Password_Manager.GUI
 {
     public partial class AddEditEntryForm : UserControl
     {
+        private const int AllCategoriesId = 0;
+
         private readonly VaultManager? _vaultManager;
         private List<PasswordEntry> _entries = new();
         private List<Category> _categories = new();
+        private List<Category> _filterCategories = new();
         private PasswordEntry? _selectedEntry;
         private bool _gridInitialized;
+        private bool _categoriesLoaded;
 
         public AddEditEntryForm() : this(null)
         {
@@ -87,11 +91,27 @@ namespace Password_Manager.GUI
             cboCategory.DataSource = _categories;
             cboCategory.DisplayMember = "Name";
             cboCategory.ValueMember = "Id";
+
+            _filterCategories = new List<Category>
+            {
+                new Category { Id = AllCategoriesId, Name = "All" }
+            };
+            _filterCategories.AddRange(_categories);
+
+            cboFilterCategory.DataSource = _filterCategories;
+            cboFilterCategory.DisplayMember = "Name";
+            cboFilterCategory.ValueMember = "Id";
+            cboFilterCategory.SelectedValue = AllCategoriesId;
+
+            _categoriesLoaded = true;
         }
 
-        private void LoadEntries()
+        private void LoadEntries(int? categoryId = null)
         {
-            _entries = _vaultManager!.GetAllPasswordEntries();
+            _entries = categoryId.HasValue && categoryId.Value != AllCategoriesId
+                ? _vaultManager!.GetEntriesByCategory(categoryId.Value)
+                : _vaultManager!.GetAllPasswordEntries();
+
             var view = _entries.Select(e => new PasswordEntryView
             {
                 Id = e.Id,
@@ -105,13 +125,22 @@ namespace Password_Manager.GUI
             entriesGrid.DataSource = view;
         }
 
+        private void cboFilterCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_categoriesLoaded || cboFilterCategory.SelectedValue is not int categoryId)
+                return;
+
+            LoadEntries(categoryId);
+            ClearFields();
+        }
+
         private void entriesGrid_SelectionChanged(object sender, EventArgs e)
         {
             if (entriesGrid.SelectedRows.Count == 0)
                 return;
 
             var id = Convert.ToInt32(entriesGrid.SelectedRows[0].Cells["Id"].Value);
-            _selectedEntry = _entries.FirstOrDefault(e => e.Id == id);
+            _selectedEntry = _entries.FirstOrDefault(entry => entry.Id == id);
             if (_selectedEntry == null)
                 return;
 
@@ -131,7 +160,7 @@ namespace Password_Manager.GUI
                 return;
 
             _vaultManager.AddPasswordEntry(entry, plainPassword);
-            LoadEntries();
+            LoadEntries(GetSelectedFilterCategoryId());
             ClearFields();
         }
 
@@ -145,7 +174,7 @@ namespace Password_Manager.GUI
 
             entry.Id = _selectedEntry.Id;
             _vaultManager.UpdatePasswordEntry(entry, string.IsNullOrWhiteSpace(plainPassword) ? null : plainPassword);
-            LoadEntries();
+            LoadEntries(GetSelectedFilterCategoryId());
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -158,7 +187,7 @@ namespace Password_Manager.GUI
                 return;
 
             _vaultManager.DeletePasswordEntry(_selectedEntry.Id);
-            LoadEntries();
+            LoadEntries(GetSelectedFilterCategoryId());
             ClearFields();
         }
 
@@ -176,8 +205,13 @@ namespace Password_Manager.GUI
             {
                 Clipboard.SetText(_selectedEntry.DecryptedPassword);
                 _vaultManager?.UpdateLastUsed(_selectedEntry.Id);
-                LoadEntries();
+                LoadEntries(GetSelectedFilterCategoryId());
             }
+        }
+
+        private int? GetSelectedFilterCategoryId()
+        {
+            return cboFilterCategory.SelectedValue is int categoryId ? categoryId : null;
         }
 
         private bool TryGetEntryInput(out PasswordEntry entry, out string plainPassword)
@@ -223,6 +257,11 @@ namespace Password_Manager.GUI
             public string Category { get; set; } = string.Empty;
             public string Notes { get; set; } = string.Empty;
             public DateTime? LastUsed { get; set; }
+        }
+
+        private void entriesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
