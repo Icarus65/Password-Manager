@@ -263,5 +263,17 @@ namespace Password_Manager.GUI
         {
 
         }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(txtPassword.UseSystemPasswordChar == false)   
+                txtPassword.UseSystemPasswordChar = true;
+            else txtPassword.UseSystemPasswordChar = false;
+        }
     }
 }

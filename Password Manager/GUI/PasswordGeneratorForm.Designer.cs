@@ -48,7 +48,7 @@
             lblTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.Location = new Point(20, 20);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(150, 21);
+            lblTitle.Size = new Size(162, 21);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Password Generator";
             // 
@@ -57,7 +57,7 @@
             lblLength.AutoSize = true;
             lblLength.Location = new Point(20, 60);
             lblLength.Name = "lblLength";
-            lblLength.Size = new Size(47, 15);
+            lblLength.Size = new Size(44, 15);
             lblLength.TabIndex = 1;
             lblLength.Text = "Length";
             // 
@@ -78,7 +78,7 @@
             chkUpper.CheckState = CheckState.Checked;
             chkUpper.Location = new Point(20, 118);
             chkUpper.Name = "chkUpper";
-            chkUpper.Size = new Size(85, 19);
+            chkUpper.Size = new Size(81, 19);
             chkUpper.TabIndex = 3;
             chkUpper.Text = "Uppercase";
             chkUpper.UseVisualStyleBackColor = true;
@@ -90,7 +90,7 @@
             chkLower.CheckState = CheckState.Checked;
             chkLower.Location = new Point(20, 143);
             chkLower.Name = "chkLower";
-            chkLower.Size = new Size(83, 19);
+            chkLower.Size = new Size(81, 19);
             chkLower.TabIndex = 4;
             chkLower.Text = "Lowercase";
             chkLower.UseVisualStyleBackColor = true;
@@ -143,7 +143,7 @@
             lblStrength.AutoSize = true;
             lblStrength.Location = new Point(200, 190);
             lblStrength.Name = "lblStrength";
-            lblStrength.Size = new Size(56, 15);
+            lblStrength.Size = new Size(55, 15);
             lblStrength.TabIndex = 9;
             lblStrength.Text = "Strength:";
             // 
@@ -174,6 +174,7 @@
             Controls.Add(lblTitle);
             Name = "PasswordGeneratorForm";
             Size = new Size(500, 300);
+            Load += PasswordGeneratorForm_Load;
             ((System.ComponentModel.ISupportInitialize)numLength).EndInit();
             ResumeLayout(false);
             PerformLayout();

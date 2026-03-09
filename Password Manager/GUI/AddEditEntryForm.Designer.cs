@@ -46,6 +46,7 @@
             btnDelete = new Button();
             btnClear = new Button();
             btnCopyPassword = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)entriesGrid).BeginInit();
             SuspendLayout();
             // 
@@ -132,6 +133,7 @@
             txtPassword.Size = new Size(240, 23);
             txtPassword.TabIndex = 8;
             txtPassword.UseSystemPasswordChar = true;
+            txtPassword.TextChanged += txtPassword_TextChanged;
             // 
             // lblCategory
             // 
@@ -217,10 +219,21 @@
             btnCopyPassword.UseVisualStyleBackColor = true;
             btnCopyPassword.Click += btnCopyPassword_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(771, 121);
+            button1.Name = "button1";
+            button1.Size = new Size(17, 15);
+            button1.TabIndex = 18;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // AddEditEntryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(button1);
             Controls.Add(btnCopyPassword);
             Controls.Add(btnClear);
             Controls.Add(btnDelete);
@@ -257,7 +270,6 @@
         private Label lblUsername;
         private TextBox txtUsername;
         private Label lblPassword;
-        private TextBox txtPassword;
         private Label lblCategory;
         private ComboBox cboCategory;
         private Label lblNotes;
@@ -267,5 +279,7 @@
         private Button btnDelete;
         private Button btnClear;
         private Button btnCopyPassword;
+        private Button button1;
+        private TextBox txtPassword;
     }
 }

@@ -49,5 +49,10 @@ namespace Password_Manager.GUI
                 Clipboard.SetText(txtGenerated.Text);
             }
         }
+
+        private void PasswordGeneratorForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
